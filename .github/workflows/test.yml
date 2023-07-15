@@ -1,0 +1,44 @@
+name: Tests
+on:
+  pull_request:
+    paths-ignore:
+      - 'README.md'
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+jobs:
+  # ensure the code builds...
+  build:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: 'go.mod'
+
+      - name: Lint
+        run: make lint
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: 'go.mod'
+
+      - name: Unit tests
+        run: make test
